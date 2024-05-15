@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: alexandre
+  application.name: acal
+  main:
+    banner-mode: "off"
+    web-application-type: none
