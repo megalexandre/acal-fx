@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.org.acal.application.controller.DashboardController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+
+          <Menu id="registrationMenuItem" mnemonicParsing="false" text="Cadastros">
+
+            <items>
+              <MenuItem fx:id="registrationInvoice" mnemonicParsing="false" text="Faturas" />
+              <MenuItem fx:id="registrationPartner" text="_Sócio" />
+                  <MenuItem fx:id="registrationCategory" mnemonicParsing="false" text="Categorias" />
+            </items>
+
+          </Menu>
+            <Menu id="registrationMenuItem" mnemonicParsing="false" text="Faturas">
+               <items>
+                  <MenuItem fx:id="searchInvoice" mnemonicParsing="false" text="Consultar Fatura" />
+                  <MenuItem fx:id="registrationInvoice1" mnemonicParsing="false" text="Gerar Faturas" />
+                  <MenuItem fx:id="registrationPartner1" text="Gerar Cobranças" />
+                  <MenuItem fx:id="registrationCategory1" mnemonicParsing="false" text="Analise" />
+               </items>
+            </Menu>
+
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <StackPane fx:id="contentArea" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

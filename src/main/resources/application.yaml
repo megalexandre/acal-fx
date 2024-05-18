@@ -5,3 +5,14 @@ spring:
   main:
     banner-mode: "off"
     web-application-type: none
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+      customer:
+        url: http://localhost:8080
+      category:
+        url: http://localhost:8080
