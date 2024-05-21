@@ -30,6 +30,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
+
+	implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
+	implementation("javax.validation:validation-api:2.0.1.Final")
+	implementation("org.glassfish:jakarta.el:4.0.2")
+
 	implementation ("org.springframework.data:spring-data-commons")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")

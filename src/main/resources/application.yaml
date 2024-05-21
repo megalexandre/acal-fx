@@ -4,7 +4,7 @@ spring:
   application.name: acal
   main:
     banner-mode: "off"
-    web-application-type: none
+    #web-application-type: none
 
 feign:
   client:
@@ -16,3 +16,4 @@ feign:
         url: http://localhost:8080
       category:
         url: http://localhost:8080
+

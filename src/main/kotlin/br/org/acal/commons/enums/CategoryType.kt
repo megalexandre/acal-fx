@@ -6,6 +6,6 @@ enum class CategoryType(val value: String) {
     EFFECTIVE("Sócio Efetivo"),
     TEMPORARY("Temporário");
     companion object {
-        fun of(value: String): CategoryType = entries.firstOrNull{ it.value == value }!!
+        fun of(value: String?): CategoryType? = entries.firstOrNull{ it.value == value }
     }
 }

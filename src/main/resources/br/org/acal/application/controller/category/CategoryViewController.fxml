@@ -14,7 +14,8 @@
          <padding>
             <Insets bottom="10.0" top="10.0" />
          </padding></Separator>
-      <GridPane alignment="CENTER" hgap="30.0" vgap="30.0">
+      <Label fx:id="errorMessage" text="Label" />
+      <GridPane alignment="TOP_CENTER" hgap="30.0" maxWidth="1024.0" style="-fx-background-color: f7f7f9;" vgap="30.0" VBox.vgrow="ALWAYS">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -49,6 +50,8 @@
                   <TextField fx:id="partnerValue" />
                </children>
             </VBox>
+
+
          </children>
          <VBox.margin>
             <Insets />
@@ -57,20 +60,27 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </GridPane>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" VBox.vgrow="ALWAYS">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
       <Separator prefWidth="200.0">
          <VBox.margin>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets top="10.0" />
          </VBox.margin>
       </Separator>
       <HBox alignment="CENTER" spacing="10.0">
          <children>
-            <Button fx:id="back" mnemonicParsing="false" text="Voltar" />
-            <Button fx:id="confirm" alignment="CENTER" mnemonicParsing="false" style="-fx-pref-width: 100];" text="Confirmar" />
+            <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="back" mnemonicParsing="false" text="Voltar" />
+                  <Button fx:id="confirm" alignment="CENTER" mnemonicParsing="false" style="-fx-pref-width: 100];" text="Confirmar" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
+            <HBox alignment="TOP_RIGHT">
+               <children>
+                  <Button fx:id="remove" mnemonicParsing="false" text="Remover" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" />

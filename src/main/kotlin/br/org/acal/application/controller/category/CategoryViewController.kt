@@ -1,17 +1,15 @@
 package br.org.acal.application.controller.category
 
+import br.org.acal.application.controller.category.input.CategoryCreateForm
 import br.org.acal.application.controller.category.output.toCategoryView
 import br.org.acal.commons.enums.CategoryType
 import br.org.acal.commons.enums.SceneUI.CATEGORY_SEARCH
-import br.org.acal.commons.extensions.toCurrency
-import br.org.acal.core.entity.Category
-import br.org.acal.core.entity.CategoryValues
+import br.org.acal.core.usecase.category.CategoryDeleteUsecase
 import br.org.acal.core.usecase.category.CategoryFindByIdUsecase
 import br.org.acal.core.usecase.category.CategorySaveUsecase
 import br.org.acal.core.usecase.category.CategoryUpdateUsecase
 import br.org.acal.infrastructure.event.MenuSelectedEvent
-import io.azam.ulidj.ULID.random
-import java.math.BigDecimal
+import jakarta.validation.Validator
 import java.net.URL
 import java.util.ResourceBundle
 import javafx.collections.FXCollections
@@ -32,20 +30,27 @@ class CategoryViewController(
     private val findById: CategoryFindByIdUsecase,
     private val save: CategorySaveUsecase,
     private val update: CategoryUpdateUsecase,
+    private val delete: CategoryDeleteUsecase,
     private val publisher: ApplicationEventPublisher,
+    private val validator: Validator
 ) : Initializable {
 
     lateinit var title: Label
     lateinit var confirm: Button
+    lateinit var remove: Button
     lateinit var back: Button
 
     lateinit var name: TextField
     lateinit var partnerValue: TextField
     lateinit var waterValue: TextField
     lateinit var categories: ComboBox<String>
+    lateinit var errorMessage: Label
+
     var id: String? = null
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
+        id = null
+        errorMessage.text = ""
         categories.items = FXCollections.observableArrayList(CategoryType.entries.map { it.value })
 
         back.setOnAction {
@@ -55,34 +60,36 @@ class CategoryViewController(
         confirm.setOnAction {
             confirm()
         }
+
+        remove.isVisible = false
+        remove.setOnAction {
+            delete.execute(id!!)
+            publisher.publishEvent(MenuSelectedEvent(CATEGORY_SEARCH))
+        }
     }
 
     private fun confirm(){
-        createCategory().also { category ->
-            when(id){
-                null -> save.execute(category)
-                else -> update.execute(category)
+
+        createFormCategory().also {
+            if (it.isValid()){
+                when(id){
+                    null -> save.execute(it.createCategory())
+                    else -> update.execute(it.createCategory(id))
+                }
+                publisher.publishEvent(MenuSelectedEvent(CATEGORY_SEARCH))
+            }else {
+                errorMessage.text = it.violations()
             }
         }
-
-        publisher.publishEvent(MenuSelectedEvent(CATEGORY_SEARCH))
     }
-    private fun createCategory(): Category =
-        Category(
-            id = id ?: random(),
+
+    private fun createFormCategory(): CategoryCreateForm =
+        CategoryCreateForm(
             name = name.text,
-            type = CategoryType.of(categories.value),
-            values =
-            listOf(
-                CategoryValues(
-                    name = "Water",
-                    value = BigDecimal(waterValue.text.toCurrency())
-                ),
-                CategoryValues(
-                    name = "Partnership",
-                    value =  BigDecimal(partnerValue.text.toCurrency())
-                )
-            ),
+            categoryType = categories.value,
+            waterValue = waterValue.text,
+            partnerValue = partnerValue.text,
+            validator = validator
         )
 
     @EventListener
@@ -95,6 +102,8 @@ class CategoryViewController(
             waterValue.text = it.water
             categories.value= it.type
         }
+
+        remove.isVisible = true
     }
 
 

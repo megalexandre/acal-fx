@@ -30,3 +30,9 @@ data class CategoryValues(
     val name: String,
     val value: BigDecimal,
 )
+
+data class CategoryFilter(
+    val id: String?,
+    val name: String?,
+    val type: String?,
+) : DefaultFilter

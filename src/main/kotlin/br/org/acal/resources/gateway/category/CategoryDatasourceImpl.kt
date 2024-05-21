@@ -1,11 +1,12 @@
 package br.org.acal.resources.gateway.category
 
+import br.org.acal.commons.enums.CategoryType
 import br.org.acal.core.datasource.CategoryDataSource
 import br.org.acal.core.entity.Category
+import br.org.acal.core.entity.CategoryFilter
 import br.org.acal.core.entity.DefaultFilter
 import br.org.acal.core.entity.PageFilter
 import br.org.acal.resources.gateway.category.data.input.CategoryPaginateGatewayResponse
-import br.org.acal.resources.gateway.category.data.output.CategoryCreateRequest
 import br.org.acal.resources.gateway.category.data.output.toCategoryCreateRequest
 import br.org.acal.resources.gateway.category.data.output.toCategoryUpdateRequest
 import org.springframework.data.domain.Page
@@ -32,7 +33,7 @@ class CategoryDatasourceImpl (
     }
 
     override fun delete(id: String) {
-        TODO("Not yet implemented")
+        categoryGateway.delete(id)
     }
 
     override fun findAll(): Collection<Category> {
@@ -42,9 +43,14 @@ class CategoryDatasourceImpl (
     override fun findById(id: String): Category? =
         categoryGateway.findById(id).toCategory()
 
-    override fun findByFilter(filter: DefaultFilter): List<Category> {
-        TODO("Not yet implemented")
-    }
+    override fun findByFilter(filter: DefaultFilter): List<Category> =
+        (filter as CategoryFilter).let {
+            categoryGateway.findByFilter(
+                id = it.id,
+                name = it.name,
+                type = CategoryType.of(it.type)?.name ,
+            )
+        }.map { it.toCategory() }
 
     override fun paginateByFilter(filter: PageFilter): Page<Category> =
         categoryGateway.paginate().let { responsePage ->
