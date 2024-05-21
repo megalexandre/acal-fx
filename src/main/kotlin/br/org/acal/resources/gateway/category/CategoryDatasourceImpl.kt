@@ -1,6 +1,5 @@
 package br.org.acal.resources.gateway.category
 
-import br.org.acal.commons.enums.CategoryType
 import br.org.acal.core.datasource.CategoryDataSource
 import br.org.acal.core.entity.Category
 import br.org.acal.core.entity.CategoryFilter
@@ -48,7 +47,9 @@ class CategoryDatasourceImpl (
             categoryGateway.findByFilter(
                 id = it.id,
                 name = it.name,
-                type = CategoryType.of(it.type)?.name ,
+                type = it.type,
+                water = it.formattedWater,
+                partner =  it.formattedPartner
             )
         }.map { it.toCategory() }
 

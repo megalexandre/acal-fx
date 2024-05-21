@@ -8,13 +8,10 @@ import br.org.acal.commons.enums.CategoryType
 import br.org.acal.commons.enums.SceneUI.CATEGORY
 import br.org.acal.commons.extensions.avoidEmptyToNull
 import br.org.acal.core.entity.CategoryFilter
-import br.org.acal.core.entity.CategoryValues
 import br.org.acal.core.usecase.category.CategoryFindUsecase
-import br.org.acal.core.usecase.category.CategoryPaginateUsecase
 import br.org.acal.infrastructure.event.MenuSelectedEvent
 import java.net.URL
 import java.util.ResourceBundle
-import javafx.collections.FXCollections
 import javafx.collections.FXCollections.observableArrayList
 import javafx.event.EventHandler
 import javafx.fxml.Initializable
@@ -35,34 +32,31 @@ import org.springframework.stereotype.Component
 @FxmlView
 class CategorySearchController(
     private val publisher: ApplicationEventPublisher,
-    private val paginate: CategoryPaginateUsecase,
     private val find: CategoryFindUsecase,
 ): Initializable {
 
-    lateinit var searchTotal: TextField
-
-    lateinit var searchType: ComboBox<ComboValues>
+    lateinit var table: TableView<CategoryTableView>
 
     lateinit var searchName: TextField
 
-    lateinit var add: Button
+    lateinit var searchType: ComboBox<ComboValues>
 
-    lateinit var table: TableView<CategoryTableView>
+    lateinit var searchTotalValue: TextField
+
+    lateinit var searchPartnerValue: TextField
+
+    lateinit var searchWaterValue: TextField
 
     lateinit var search: Button
 
     lateinit var clear: Button
 
-    lateinit var searchText: TextField
+    lateinit var add: Button
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         initializeTable()
 
         search.setOnAction {
-            find()
-        }
-
-        searchText.setOnAction {
             find()
         }
 
@@ -74,18 +68,14 @@ class CategorySearchController(
             publisher.publishEvent(MenuSelectedEvent(CATEGORY))
         }
 
-        searchName.onKeyPressed = setEnterEventHandler{
-            find()
-        }
+        addEvents(searchName)
+        addEvents(searchWaterValue)
+        addEvents(searchPartnerValue)
+        addEvents(searchTotalValue)
         val select = ComboValues("Selecione", null)
-        val values = observableArrayList(
-            CategoryType.entries.map { it.value }.map {
-                ComboValues(it, it)
-            }.toMutableList()
-                .apply {
-                    add(select)
-                }
-        )
+        val values = observableArrayList(select).apply {
+            addAll(CategoryType.entries.map { it.value }.map { ComboValues(it, it) })
+        }
 
         searchType.items = values
         searchType.value = select
@@ -95,11 +85,21 @@ class CategorySearchController(
         }
     }
 
+    private fun addEvents(textField: TextField){
+        textField.onKeyPressed = setEnterEventHandler{
+            find()
+        }
+    }
+
     private fun clear() {
-        this.table.items = null
-        this.searchText.text = null
-        this.searchTotal.text = null
-        this.searchName.text = null
+        table.items = observableArrayList()
+
+        searchName.text = ""
+        searchType.value = searchType.items[0]
+        searchTotalValue.text = ""
+        searchPartnerValue.text = ""
+        searchWaterValue.text = ""
+        searchTotalValue.text = ""
     }
 
     private fun find() {
@@ -108,9 +108,10 @@ class CategorySearchController(
             CategoryFilter(
                 id = null,
                 name = searchName.text.avoidEmptyToNull(),
-                type = searchType.value.value?.avoidEmptyToNull()
+                type = searchType.value.value,
+                water = searchWaterValue.text?.avoidEmptyToNull(),
+                partner = searchPartnerValue.text?.avoidEmptyToNull()
             )
-
         )
 
         val data = observableArrayList(
@@ -139,8 +140,6 @@ class CategorySearchController(
                 selectedItem?.let { onClickItem(it) }
             }
         }
-
-
 
     }
 

@@ -19,42 +19,55 @@
       </HBox>
       <Accordion>
         <panes>
-          <TitledPane animated="false" style="-fx-background-color: #f2f2f2;" text="Filtros">
+          <TitledPane animated="false" text="Filtros">
                <content>
-                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+                  <GridPane hgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER">
                            <children>
                               <Label text="Nome:" />
                               <TextField fx:id="searchName" alignment="CENTER" maxWidth="1.7976931348623157E308" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" GridPane.columnIndex="1">
                            <children>
                               <Label text="Tipo:" />
                               <ComboBox fx:id="searchType" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" GridPane.columnIndex="2">
                            <children>
                               <Label text="Valor da Água:" />
                               <TextField fx:id="searchWaterValue" maxWidth="1.7976931348623157E308" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" layoutX="338.0" layoutY="20.0" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" GridPane.columnIndex="3">
                            <children>
-                              <Label fx:id="searchPartnerValue" text="Valor Sócio:" />
-                              <TextField fx:id="searchTotal1" maxWidth="1.7976931348623157E308" />
+                              <Label text="Valor Sócio:" />
+                              <TextField fx:id="searchPartnerValue" maxWidth="1.7976931348623157E308" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" layoutX="497.0" layoutY="20.0" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" GridPane.columnIndex="4">
                            <children>
                               <Label text="Valor Total:" />
-                              <TextField fx:id="searchTotalValeu" maxWidth="1.7976931348623157E308" />
+                              <TextField fx:id="searchTotalValue" maxWidth="1.7976931348623157E308" />
                            </children>
                         </VBox>
                      </children>
-                  </HBox>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </GridPane>
                </content>
           </TitledPane>
         </panes>
@@ -80,8 +93,6 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label text="Número:" />
-                  <TextField fx:id="searchText" />
                   <Button fx:id="search" mnemonicParsing="false" text="Buscar" />
                   <Button fx:id="clear" mnemonicParsing="false" text="Limpar" />
                </children>

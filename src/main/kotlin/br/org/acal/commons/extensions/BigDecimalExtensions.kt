@@ -9,7 +9,7 @@ import java.util.Locale
 fun BigDecimal.toMonetary(): BigDecimal =
     when(this){
         ZERO -> ZERO
-        else -> this.setScale(9, HALF_DOWN)
+        else -> this.setScale(2, HALF_DOWN)
     }
 
 

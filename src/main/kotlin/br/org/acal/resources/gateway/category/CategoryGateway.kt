@@ -24,7 +24,9 @@ interface CategoryGateway {
     fun findByFilter(
         @RequestParam("id") id: String?,
         @RequestParam("name") name: String?,
-        @RequestParam("type") type: String?
+        @RequestParam("type") type: String?,
+        @RequestParam("water") water: String?,
+        @RequestParam("partner") partner: String?,
     ): List<CategoryPaginateGatewayResponse>
     @PostMapping
     fun save(categoryCreateRequest: CategoryCreateRequest): CategoryCreateResponse

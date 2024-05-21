@@ -18,6 +18,8 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.layout.ColumnConstraints
+import javafx.scene.layout.FlowPane
 import net.rgielen.fxweaver.core.FxmlView
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.event.EventListener
@@ -35,6 +37,7 @@ class CategoryViewController(
     private val validator: Validator
 ) : Initializable {
 
+    lateinit var flowPane: FlowPane
     lateinit var title: Label
     lateinit var confirm: Button
     lateinit var remove: Button
@@ -66,6 +69,7 @@ class CategoryViewController(
             delete.execute(id!!)
             publisher.publishEvent(MenuSelectedEvent(CATEGORY_SEARCH))
         }
+
     }
 
     private fun confirm(){
