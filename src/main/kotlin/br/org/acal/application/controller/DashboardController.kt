@@ -51,6 +51,7 @@ class DashboardController(
     fun handleContextStart(event: MenuSelectedEvent) {
         changeContentArea(event.ui, event.id)
     }
+
     private fun changeContentArea(sceneUI: SceneUI, id: String? = null){
         contentArea.children.clear()
 
@@ -64,6 +65,4 @@ class DashboardController(
         contentArea.children.add(view)
     }
 
-
 }
-

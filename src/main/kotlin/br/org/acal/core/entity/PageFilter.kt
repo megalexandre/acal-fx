@@ -1,23 +1,18 @@
 package br.org.acal.core.entity
 
-import br.org.acal.commons.enums.Direction
+import org.springframework.data.domain.Sort
+
 
 open class PageFilter (
-    open val limitOffsetAndSort: LimitOffsetAndSort? = null,
-    open val sortField: SortField? = null,
+    open val limitOffsetAndSort: LimitOffsetAndSort,
     open val filter: DefaultFilter? = null,
 )
 
 interface DefaultFilter
 
-class LimitOffsetAndSort (
-    val offset: Int? = 0,
-    val size: Int? = 10,
+data class LimitOffsetAndSort (
+    val offset: Number = 0,
+    val size: Number = 30,
     val field: String = "id",
-    val direction: Direction = Direction.ASC,
-)
-
-class SortField (
-    val field: String?,
-    val direction: Direction?,
+    val direction: Sort.Direction = Sort.Direction.ASC,
 )

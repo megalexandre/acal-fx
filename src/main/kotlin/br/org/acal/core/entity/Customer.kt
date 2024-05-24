@@ -15,3 +15,10 @@ data class Customer (
     val type: PersonType = documentNumber.type
     val preferentialNumber = phoneNumbers?.first { it.preferential }?.number
 }
+
+data class CustomerFilter(
+    val id: String? = null,
+    val name: String? = null,
+    val type: String? = null,
+    val documentNumber: String? = null,
+) : DefaultFilter

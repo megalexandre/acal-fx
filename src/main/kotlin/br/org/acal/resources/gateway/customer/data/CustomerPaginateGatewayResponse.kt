@@ -18,8 +18,6 @@ data class CustomerPaginateGatewayResponse(
         phoneNumbers = phoneNumbers,
         active = active,
     )
-
 }
 
 fun Collection<CustomerPaginateGatewayResponse>.toCustomer(): Collection<Customer> = this.map { it.toCustomer() }
-

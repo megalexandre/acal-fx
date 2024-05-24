@@ -11,7 +11,7 @@ data class CategoryTableView(
     val partner: String,
     val total: String
 )
-fun Category.toCustomerTableViewList(): CategoryTableView =
+fun Category.toCategoryTableViewList(): CategoryTableView =
     CategoryTableView(
         id = this.id,
         name = this.name,
@@ -21,5 +21,3 @@ fun Category.toCustomerTableViewList(): CategoryTableView =
         total = "R$ " + this.total.toCurrency(),
     )
 
-fun Collection<Category>.toCategoryTableView(): Collection<CategoryTableView> =
-    this.map { it.toCustomerTableViewList() }

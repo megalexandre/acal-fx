@@ -2,18 +2,19 @@ package br.org.acal.application.controller.category
 
 import br.org.acal.application.component.ComboValues
 import br.org.acal.application.controller.category.output.CategoryTableView
-import br.org.acal.application.controller.category.output.toCustomerTableViewList
+import br.org.acal.application.controller.category.output.toCategoryTableViewList
 import br.org.acal.application.render.StripedTableRender
 import br.org.acal.commons.enums.CategoryType
 import br.org.acal.commons.enums.SceneUI.CATEGORY
+import br.org.acal.commons.extensions.EventHandler
 import br.org.acal.commons.extensions.avoidEmptyToNull
 import br.org.acal.core.entity.CategoryFilter
 import br.org.acal.core.usecase.category.CategoryFindUsecase
+import br.org.acal.core.usecase.screen.ChangeScreenUsecase
 import br.org.acal.infrastructure.event.MenuSelectedEvent
 import java.net.URL
 import java.util.ResourceBundle
 import javafx.collections.FXCollections.observableArrayList
-import javafx.event.EventHandler
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
@@ -21,18 +22,15 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.control.cell.PropertyValueFactory
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyEvent
 import net.rgielen.fxweaver.core.FxmlView
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 
 
 @Component
 @FxmlView
 class CategorySearchController(
-    private val publisher: ApplicationEventPublisher,
     private val find: CategoryFindUsecase,
+    private val changeScreen: ChangeScreenUsecase
 ): Initializable {
 
     lateinit var table: TableView<CategoryTableView>
@@ -65,13 +63,24 @@ class CategorySearchController(
         }
 
         add.setOnAction {
-            publisher.publishEvent(MenuSelectedEvent(CATEGORY))
+            changeScreen.execute(MenuSelectedEvent(CATEGORY))
         }
 
-        addEvents(searchName)
-        addEvents(searchWaterValue)
-        addEvents(searchPartnerValue)
-        addEvents(searchTotalValue)
+        searchName.onKeyPressed = EventHandler.setEnterEvent {
+            find()
+        }
+
+        searchWaterValue.onKeyPressed = EventHandler.setEnterEvent {
+            find()
+        }
+        searchPartnerValue.onKeyPressed = EventHandler.setEnterEvent {
+            find()
+        }
+
+        searchTotalValue.onKeyPressed = EventHandler.setEnterEvent {
+            find()
+        }
+
         val select = ComboValues("Selecione", null)
         val values = observableArrayList(select).apply {
             addAll(CategoryType.entries.map { it.value }.map { ComboValues(it, it) })
@@ -85,11 +94,6 @@ class CategorySearchController(
         }
     }
 
-    private fun addEvents(textField: TextField){
-        textField.onKeyPressed = setEnterEventHandler{
-            find()
-        }
-    }
 
     private fun clear() {
         table.items = observableArrayList()
@@ -115,7 +119,7 @@ class CategorySearchController(
         )
 
         val data = observableArrayList(
-            content.map { it.toCustomerTableViewList() }
+            content.map { it.toCategoryTableViewList() }
         )
 
         table.items = data
@@ -144,8 +148,9 @@ class CategorySearchController(
     }
 
     private fun onClickItem(category: CategoryTableView) {
-        publisher.publishEvent(MenuSelectedEvent(CATEGORY, category.id))
+        changeScreen.execute(MenuSelectedEvent(CATEGORY, category.id))
     }
+
     private fun addColumn(name: String, title: String) {
         val tableColumn = TableColumn<CategoryTableView, String>()
         tableColumn.text = title
@@ -154,12 +159,5 @@ class CategorySearchController(
         table.columns.add(tableColumn)
     }
 
-    private fun setEnterEventHandler(action: () -> Unit): EventHandler<KeyEvent> {
-        return EventHandler { event ->
-            if (event.code == KeyCode.ENTER) {
-                action()
-            }
-        }
-    }
 
 }
